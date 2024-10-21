@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isSpinning = false;
     let startAngle = 0;
 
+    // Create a wheel with each unique color segment rewarding a cash prize >> each has to have a cash prize so i wasnt sure if i should make the lowest value 1 or 0
     const segments = [
         { minDegree: 0, maxDegree: 18, color: "purple", prize: 5 },
         { minDegree: 18, maxDegree: 36, color: "green", prize: 0 },
