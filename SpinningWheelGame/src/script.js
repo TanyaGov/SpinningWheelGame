@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const canvas = document.getElementById("wheel");
-    const ctx = canvas.getContext("2d");
+    const context = canvas.getContext("2d");
     const spinButton = document.getElementById("spinButton");
-    const winAmountInput = document.getElementById("winAmount");
+    const amountInput = document.getElementById("winAmount");
 
     let isSpinning = false;
     let startAngle = 0;
@@ -39,62 +39,62 @@ document.addEventListener("DOMContentLoaded", function () {
         volume: 0.5
     });
 
-    const wheelImage = new Image();
-    wheelImage.src = 'Wheel_Test.png';
-    wheelImage.onload = function () {
-        drawWheel();
+    const wheelImg = new Image();
+    wheelImg.src = 'Wheel_Test.png';
+    wheelImg.onload = function () {
+        showWheel();
     };
 
-    function drawWheel() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2); 
-        ctx.rotate(startAngle);
+    function showWheel() {
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.save();
+        context.translate(canvas.width / 2, canvas.height / 2); 
+        context.rotate(startAngle);
         const imageRotation = 9 * (Math.PI / 180); 
-        ctx.rotate(imageRotation);
+        context.rotate(imageRotation);
     
-        ctx.drawImage(wheelImage, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-        ctx.restore();
+        context.drawImage(wheelImg, -canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
+        context.restore();
 
-        ctx.save();
-        ctx.translate(canvas.width / 2, canvas.height / 2); 
-        ctx.rotate(startAngle);
+        context.save();
+        context.translate(canvas.width / 2, canvas.height / 2); 
+        context.rotate(startAngle);
     
         for (let i = 0; i < segments.length; i++) {
             const angle = i * segmentAngle * (Math.PI / 180);
-            ctx.save();
-            ctx.rotate(angle + (segmentAngle / 2) * (Math.PI / 180));
-            ctx.translate(0, -canvas.width / 2.5);
+            context.save();
+            context.rotate(angle + (segmentAngle / 2) * (Math.PI / 180));
+            context.translate(0, -canvas.width / 2.5);
     
-            ctx.font = 'bold 20px Arial';
-            ctx.fillStyle = '#FFFFFF';
-            ctx.textAlign = 'center';
-            ctx.fillText(segments[i].prize, 0, 0); 
-            ctx.restore();
+            context.font = 'bold 20px Arial';
+            context.fillStyle = '#FFFFFF';
+            context.textAlign = 'center';
+            context.fillText(segments[i].prize, 0, 0); 
+            context.restore();
         }
     
-        ctx.restore();
+        context.restore();
     
-        ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, 10);
-        ctx.lineTo(canvas.width / 2 - 15, 40);
-        ctx.lineTo(canvas.width / 2 + 15, 40);
-        ctx.closePath();
-        ctx.fillStyle = "#FF0000";
-        ctx.fill();
+        context.beginPath();
+        context.moveTo(canvas.width / 2, 10);
+        context.lineTo(canvas.width / 2 - 15, 40);
+        context.lineTo(canvas.width / 2 + 15, 40);
+        context.closePath();
+        context.fillStyle = "#FF0000";
+        context.fill();
     }
     
     function spin() {
         if (isSpinning) return;
 
-        const winAmount = parseInt(winAmountInput.value);
+        const winAmount = parseInt(amountInput.value);
         if (isNaN(winAmount) || winAmount <= 0) {
             alert("Please enter a valid win amount.");
             return;
         }
 
         spinButton.disabled = true;
-        winAmountInput.disabled = true;
+        amountInput.disabled = true;
         winLabel.innerHTML = "S P I N N I N G ...";
         winLabel.style.color = "white"; 
 
@@ -109,15 +109,15 @@ document.addEventListener("DOMContentLoaded", function () {
             spinTime -= 1000 / 60; 
 
             tickSound.play(); 
-            drawWheel(); 
+            showWheel(); 
             requestAnimationFrame(spinAnimation);
         } else {
             isSpinning = false;
             const finalSpinAngle = (startAngle * (180 / Math.PI)) % 360; 
-            calculatePrize(finalSpinAngle);
+            calculateWin(finalSpinAngle);
 
             spinButton.disabled = false;
-            winAmountInput.disabled = false;
+            amountInput.disabled = false;
         }
     }
 
@@ -126,13 +126,13 @@ document.addEventListener("DOMContentLoaded", function () {
         volume: 0.5
     });
 
-    function calculatePrize(finalSpinAngle) {
+    function calculateWin(finalSpinAngle) {
         const adjustedAngle = (360 - finalSpinAngle) % 360; 
         const selectedSegment = segments.find(segment => {
             return adjustedAngle >= segment.minDegree && adjustedAngle < segment.maxDegree;});
         
         if (selectedSegment) {
-            const winAmount = parseInt(winAmountInput.value);
+            const winAmount = parseInt(amountInput.value);
             if (selectedSegment.prize <= 0){
                 winLabel.innerHTML = `TRY AGAIN<br>You won: ${winAmount * selectedSegment.prize}`;
                 winLabel.style.color = "#ff3333";
