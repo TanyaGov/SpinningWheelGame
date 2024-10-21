@@ -9,12 +9,15 @@
 <body>
     <div class="wheel-container">
         <canvas id="wheel" width="500" height="500"></canvas>
+        <div>
+            <label id="winLabel">Press SPIN Button to Play</label>
+        </div>
         <div class="controls">
-            <input type="number" id="winAmount" placeholder="Enter Win Amount" />
-            <button id="spinButton">Spin</button>
+            <input type="number" id="winAmount" step="100" placeholder="Enter Win Amount" />
+            <button id="spinButton">SPIN</button>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"></script>
-    <script src="wheelGame.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
